@@ -113,8 +113,25 @@ function Get-PowerSchoolStudents {
        [String[]]
        $Expansions = @("demographics","addresses","alerts","phones","school_enrollment","ethnicity_race","contact","contact_info","initial_enrollment","schedule_setup","fees", "lunch"),
        [String[]]
-       $Extensions=@("s_pa_stu_x","s_stu_crdc_x","c_studentlocator","s_stu_ncea_x","studentcorefields")
+       $Extensions=@("s_pa_stu_x","s_stu_crdc_x","c_studentlocator","s_stu_ncea_x","studentcorefields"),
+       [Switch]
+       $UseQuery,
+       [string]
+       $QueryName = "org.bucksiu.powershellpowerschool.api.students"
    )
+
+   $studentResults = @()
+   if( $UseQuery )
+   {
+       $qr = Execute-PowerSchoolPowerQuery -queryName $QueryName
+
+       Foreach ($Student in $qr.record)
+       {
+           $studentResults += $student.tables.students
+       } 
+
+   }
+   else {
     $URL = "/ws/v1/district/student?q=school_enrollment.enroll_status==($($EnrollmentStatus -join ','))"
     if ($Expansions.count -gt 0)
     { 
@@ -126,7 +143,7 @@ function Get-PowerSchoolStudents {
     }
     $count = Get-RecordCount -EndpointURL $URL
     Write-Host "Found $count Students"
-    $studentResults = @()
+    
     $pageCounter = 0
     While ( $studentResults.Count -lt $count)
     {
@@ -137,6 +154,7 @@ function Get-PowerSchoolStudents {
         }
         $pageCounter +=1
     }
+   }
     $studentResults
 }
 
@@ -184,7 +202,11 @@ function Get-PowerSchoolCourses {
 }
 
 
-function Get-PowerSchoolPowerQuery {
+function Execute-PowerSchoolPowerQuery {
+    <#
+        .LINK
+            https://support.powerschool.com/developer/#/page/powerqueries
+    #>
     param (
         $queryName
     )

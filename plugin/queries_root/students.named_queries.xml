@@ -3,6 +3,7 @@
         <description>Students Query</description>
         <args/>
         <columns>
+            <column>STUDENTS.ID</column>
             <column>STUDENTS.DCID</column>
             <column>STUDENTS.CITY</column>
             <column column="STUDENTS.LAST_NAME">Comp_Info_Accep_Policy</column>
@@ -16,11 +17,31 @@
             <column column="STUDENTS.LAST_NAME">Horizon_LunchID</column>
             <column>STUDENTS.STUDENT_NUMBER</column>
             <column>STUDENTS.ENROLL_STATUS</column>
+            <column column="STUDENTS.LAST_NAME">Emerg_3_Phone</column>
+            <column>STUDENTS.Emerg_Phone_1</column>
+            <column>STUDENTS.Emerg_Phone_2</column>
+            <column column="STUDENTS.LAST_NAME">Mother_Cell_Phone</column>
+            <column column="STUDENTS.LAST_NAME">Father_Cell_Phone</column>
+            <column>STUDENTS.HOME_PHONE</column>
             <column column="STUDENTS.LAST_NAME">AMPM</column>
+            <column>STUDENTS.mother</column>
+            <column>STUDENTS.father</column>
+            <column>STUDENTS.Mailing_Street</column>
+            <column>STUDENTS.Street</column>
+            <column>STUDENTS.Mailing_City</column>
+            <column>STUDENTS.Mailing_State</column>
+            <column>STUDENTS.Mailing_Zip</column>
+            <column column="STUDENTS.LAST_NAME">motherdayphone</column>
+            <column column="STUDENTS.LAST_NAME">fatherdayphone</column>
+            <column>STUDENTS.GuardianEmail</column>
+            <column column="STUDENTS.LAST_NAME">PA_Partic_Program</column>
+            <column>STUDENTS.DistrictOfResidence</column>
+            <column>STUDENTS.Middle_Name</column>
   		</columns>
         <sql>
 			<![CDATA[
 			select
+            s.id,
 			s.dcid,
 			s.City,
             ps_customfields.getcf('students',s.id,'Comp_Info_Accep_Policy')  Comp_Info_Accep_Policy,
@@ -34,7 +55,30 @@
             ps_customfields.getcf('students',s.id,'Horizon_LunchID') Horizon_LunchID,
             s.Student_Number,
             s.enroll_status,
-			ps_customfields.getcf('students',s.id,'AMPM')  AMPM	
+            ps_customfields.getcf('students',s.id,'Emerg_3_Phone') Emerg_3_Phone,
+            s.Emerg_Phone_1,
+            s.Emerg_Phone_2,
+            ps_customfields.getcf('students',s.id,'Mother_Cell_Phone') Mother_Cell_Phone,
+            ps_customfields.getcf('students',s.id,'Father_Cell_Phone') Father_Cell_Phone,
+            s.Home_Phone,
+			ps_customfields.getcf('students',s.id,'AMPM')  AMPM,
+            s.mother,
+            s.father,
+            s.Mailing_Street,
+            s.Street,
+            s.Mailing_City,
+            s.Mailing_State,
+            s.Mailing_Zip,
+            ps_customfields.getcf('students',s.id,'motherdayphone') motherdayphone,
+            ps_customfields.getcf('students',s.id,'fatherdayphone') fatherdayphone,
+            s.GuardianEmail,
+            ps_customfields.getcf('students',s.id,'PA_Partic_Program') PA_Partic_Program,
+            s.DistrictOfResidence,
+            s.Middle_Name
+
+
+
+
 			from students s
 			order by s.dcid        
 			]]>

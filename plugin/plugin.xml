@@ -13,6 +13,7 @@
   </publisher>
 
   <access_request>
+    <field table="STUDENTS" field="ID" access="ViewOnly" />
     <field table="STUDENTS" field="DCID" access="ViewOnly" />
     <field table="STUDENTS" field="CITY" access="ViewOnly" />
     <field table="STUDENTS" field="DOB" access="ViewOnly" />
@@ -22,6 +23,20 @@
     <field table="STUDENTS" field="GRADE_LEVEL" access="ViewOnly" />
 		<field table="STUDENTS" field="STUDENT_NUMBER" access="ViewOnly" />
 		<field table="STUDENTS" field="ENROLL_STATUS" access="ViewOnly" />
+    <field table="STUDENTS" field="Emerg_Phone_1" access="ViewOnly" />
+    <field table="STUDENTS" field="Emerg_Phone_2" access="ViewOnly" />
+    <field table="STUDENTS" field="HOME_PHONE" access="ViewOnly" />
+    <field table="STUDENTS" field="mother" access="ViewOnly" />
+    <field table="STUDENTS" field="father" access="ViewOnly" />
+    <field table="STUDENTS" field="Mailing_Street" access="ViewOnly" />
+    <field table="STUDENTS" field="Street" access="ViewOnly" />
+    <field table="STUDENTS" field="Mailing_City" access="ViewOnly" />
+    <field table="STUDENTS" field="Mailing_State" access="ViewOnly" />
+    <field table="STUDENTS" field="Mailing_Zip" access="ViewOnly" />
+    <field table="STUDENTS" field="GuardianEmail" access="ViewOnly" />
+    <field table="STUDENTS" field="DistrictOfResidence" access="ViewOnly" />
+    <field table="STUDENTS" field="Middle_Name" access="ViewOnly" />
+
 		
   </access_request>
 
