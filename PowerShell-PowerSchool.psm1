@@ -118,9 +118,9 @@ function Get-PowerSchoolStudents {
     Write-Host "Found $count Students"
     $studentResults = @()
     $pageCounter = 0
-    While ( $studentResults.Count -lt $count -and $studentResults.count -lt $MaxResults)
+    While ( $studentResults.Count -lt $count)
     {
-        $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter -PageSize $MaxResults
+        $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter 
         Foreach ($student in $response.students.student)
         {
             $studentResults += $student
