@@ -1,0 +1,5 @@
+<permission_mappings>
+  <permission name='/admin/home.html'>
+   <implies>/ws/schema/query/org.bucksiu.powershellpowerschool.api.students</implies>
+  </permission>
+</permission_mappings>

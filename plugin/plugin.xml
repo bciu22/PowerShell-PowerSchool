@@ -13,8 +13,16 @@
   </publisher>
 
   <access_request>
+    <field table="STUDENTS" field="DCID" access="ViewOnly" />
+    <field table="STUDENTS" field="CITY" access="ViewOnly" />
+    <field table="STUDENTS" field="DOB" access="ViewOnly" />
+		<field table="STUDENTS" field="FIRST_NAME" access="ViewOnly" />
     <field table="STUDENTS" field="LAST_NAME" access="ViewOnly" />
-    <field table="STUDENTS" field="FIRST_NAME" access="ViewOnly" />
+    <field table="STUDENTS" field="GENDER" access="ViewOnly" />
+    <field table="STUDENTS" field="GRADE_LEVEL" access="ViewOnly" />
+		<field table="STUDENTS" field="STUDENT_NUMBER" access="ViewOnly" />
+		<field table="STUDENTS" field="ENROLL_STATUS" access="ViewOnly" />
+		
   </access_request>
 
 </plugin>

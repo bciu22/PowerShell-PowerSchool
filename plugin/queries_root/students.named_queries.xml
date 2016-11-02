@@ -1,0 +1,43 @@
+<queries>
+    <query name="org.bucksiu.powershellpowerschool.api.students" coreTable="STUDENTS" flattened="false">
+        <description>Students Query</description>
+        <args/>
+        <columns>
+            <column>STUDENTS.DCID</column>
+            <column>STUDENTS.CITY</column>
+            <column column="STUDENTS.LAST_NAME">Comp_Info_Accep_Policy</column>
+            <column column="STUDENTS.LAST_NAME">CT_Area</column>
+            <column column="STUDENTS.LAST_NAME">District_ID</column>
+            <column>STUDENTS.DOB</column>
+            <column>STUDENTS.FIRST_NAME</column>
+            <column>STUDENTS.LAST_NAME</column>
+            <column>STUDENTS.GENDER</column>
+            <column>STUDENTS.GRADE_LEVEL</column>
+            <column column="STUDENTS.LAST_NAME">Horizon_LunchID</column>
+            <column>STUDENTS.STUDENT_NUMBER</column>
+            <column>STUDENTS.ENROLL_STATUS</column>
+            <column column="STUDENTS.LAST_NAME">AMPM</column>
+  		</columns>
+        <sql>
+			<![CDATA[
+			select
+			s.dcid,
+			s.City,
+            ps_customfields.getcf('students',s.id,'Comp_Info_Accep_Policy')  Comp_Info_Accep_Policy,
+			ps_customfields.getcf('students',s.id,'CT_Area') CT_Area,
+            ps_customfields.getcf('students',s.id,'District_ID') District_ID,
+            s.DOB,
+            s.first_name,
+			s.last_name,
+            s.gender,
+			s.grade_level,
+            ps_customfields.getcf('students',s.id,'Horizon_LunchID') Horizon_LunchID,
+            s.Student_Number,
+            s.enroll_status,
+			ps_customfields.getcf('students',s.id,'AMPM')  AMPM	
+			from students s
+			order by s.dcid        
+			]]>
+        </sql>
+    </query>
+</queries>
