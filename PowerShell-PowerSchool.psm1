@@ -65,10 +65,15 @@ function Invoke-PowerSchoolRESTMethod {
     {
         if ($EndpointURL -like "*?*")
         {
-            $EndpointURL +="&page=$PageNumber"
+           $EndpointURL +="&page=$PageNumber"
         }
-        #Write-Host $EndpointURL
-        #return
+    }
+    if ($PageSize -lt 100 -and $PageSize -gt 0)
+    {
+        if ($EndpointURL -like "*?*")
+        {
+           $EndpointURL +="&pagesize=$PageSize"
+        }
     }
     $uri ="$($(Get-Variable -Name 'PowerSchoolURL').value)$($EndpointURL)"
     Write-Host $uri
@@ -90,7 +95,7 @@ function Get-RecordCount {
 function Get-PowerSchoolStudents {
    param(
        [int16]
-       $MaxResults = 10,
+       $MaxResults=0,
        [int16]
        $SchoolID = 3,
        [String[]]
@@ -100,7 +105,7 @@ function Get-PowerSchoolStudents {
        [String[]]
        $Extensions=@("s_pa_stu_x","s_stu_crdc_x","c_studentlocator","s_stu_ncea_x","studentcorefields")
    )
-    $URL = "/ws/v1/school/$($SchoolID)/student?q=school_enrollment.enroll_status==($($EnrollmentStatus -join ','))"
+    $URL = "/ws/v1/district/student?q=school_enrollment.enroll_status==($($EnrollmentStatus -join ','))"
     if ($Expansions.count -gt 0)
     { 
         $URL ="$URL&expansions=$($Expansions -join ',')"
@@ -115,7 +120,7 @@ function Get-PowerSchoolStudents {
     $pageCounter = 0
     While ( $studentResults.Count -lt $count -and $studentResults.count -lt $MaxResults)
     {
-        $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter
+        $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter -PageSize $MaxResults
         Foreach ($student in $response.students.student)
         {
             $studentResults += $student
@@ -123,4 +128,32 @@ function Get-PowerSchoolStudents {
         $pageCounter +=1
     }
     $studentResults
+}
+
+function Get-PowerSchoolDatabaseTables {
+    $URL = "/ws/schema/table"
+    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter -PageSize $MaxResults
+    $response
+}
+
+Function Get-PowerSchoolTableSchema {
+    param(
+        $tableName
+    )
+    $URL = "/ws/schema/table/$tableName/metadata"
+    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter -PageSize $MaxResults
+    $response
+
+}
+
+function Get-PowerSchoolTableRecord {
+    param(
+        $tableName,
+        $id,
+        [string[]]
+        $columns=@("*")
+    )
+    $URL = "/ws/schema/table/$tableName/$($id)?projection=$($columns -join ',')"
+    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter -PageSize $MaxResults
+    $response
 }
