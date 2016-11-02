@@ -60,12 +60,14 @@ function Invoke-PowerSchoolRESTMethod {
     $headers.add("Authorization","Bearer $($(Get-Variable -Name "PowerSchoolAccessToken").Value)")
     $headers.Add("Accept", 'application/json')
     $headers.Add("Content-Type",'application/json')
-
     if($PageNumber -gt 0)
     {
         if ($EndpointURL.Contains("?"))
         {
            $EndpointURL +="&page=$PageNumber"
+        }
+        else {
+             $EndpointURL +="?page=$PageNumber"
         }
     }
     if ($PageSize -lt 100 -and $PageSize -gt 0)
@@ -76,12 +78,11 @@ function Invoke-PowerSchoolRESTMethod {
         }
     }
     $uri ="$($(Get-Variable -Name 'PowerSchoolURL').value)$($EndpointURL)"
-    Write-Host $uri
     $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers
     $Response
 }
 
-function Get-RecordCount {
+function Get-PowerSchoolRecordCount {
     param(
         $EndpointURL
     )
@@ -123,12 +124,23 @@ function Get-PowerSchoolStudents {
    $studentResults = @()
    if( $UseQuery )
    {
-       $qr = Execute-PowerSchoolPowerQuery -queryName $QueryName
+        $pageCounter = 0
+        $hasMore = $true
+        While ( $hasMore )
+        {
 
-       Foreach ($Student in $qr.record)
-       {
-           $studentResults += $student.tables.students
-       } 
+            $qr = Execute-PowerSchoolPowerQuery -queryName $QueryName -PageNumber $pageCounter
+            if ($qr.record.count -lt 100)
+            {
+                $hasMore = $false
+            }   
+            Foreach ($Student in $qr.record)
+            {
+                $studentResults += $student.tables.students
+            } 
+            $pageCounter +=1
+        }
+           
 
    }
    else {
@@ -141,9 +153,7 @@ function Get-PowerSchoolStudents {
     {
         $URL ="$URL&extensions=$($Extensions -join ',')"
     }
-    $count = Get-RecordCount -EndpointURL $URL
-    Write-Host "Found $count Students"
-    
+    $count = Get-PowerSchoolRecordCount -EndpointURL $URL    
     $pageCounter = 0
     While ( $studentResults.Count -lt $count)
     {
@@ -208,9 +218,10 @@ function Execute-PowerSchoolPowerQuery {
             https://support.powerschool.com/developer/#/page/powerqueries
     #>
     param (
-        $queryName
+        $queryName,
+        $PageNumber=0
     )
      $URL = "/ws/schema/query/$queryName"
-    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $pageCounter -PageSize $MaxResults
+    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber
     $response
 }
