@@ -43,25 +43,84 @@ function Connect-PowerSchoolService {
 
     $Response = Invoke-RestMethod -Uri $PowerSchoolURL"/oauth/access_token" -Method Post -Headers $headers -Body $body
 
+    Set-Variable -Scope Global -Name "PowerSchoolURL" -Value $PowerSchoolURL
     Set-Variable -Scope Global -Name "PowerSchoolAccessToken" -Value $Response.access_token
     Set-Variable -Scope Global -Name "PowerSchoolAccessTokenExpiration" -Value $(Get-Date).AddSeconds($Response.expires_in)
 }
 
 function Invoke-PowerSchoolRESTMethod {
     param(
-        $EndpointURL
+        $EndpointURL,
+        $Method,
+        $PageNumber=0,
+        $PageSize=0
     )
 
-    $Response = Invoke-RestMethod -Uri $PowerSchoolURL"/oath/access_token" -Method Post -Headers $headers -Credential $Credential
+    $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+    $headers.add("Authorization","Bearer $($(Get-Variable -Name "PowerSchoolAccessToken").Value)")
+    $headers.Add("Accept", 'application/json')
+    $headers.Add("Content-Type",'application/json')
 
+    if($PageNumber -ne 0)
+    {
+        if ($EndpointURL -like "*?*")
+        {
+            $EndpointURL +="&page=$PageNumber"
+        }
+        #Write-Host $EndpointURL
+        #return
+    }
+    $uri ="$($(Get-Variable -Name 'PowerSchoolURL').value)$($EndpointURL)"
+    Write-Host $uri
+    $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers
+    $Response
 }
 
+function Get-RecordCount {
+    param(
+        $EndpointURL
+    )
+    $split = $EndpointURL.split('?')
+    $URL = "$($split[0])/count?$($split[1])"
+    Invoke-PowerSchoolRESTMethod -EndpointURL $URL  -Method "GET" | Select-Object -ExpandProperty Resource | Select-Object -ExpandProperty Count
+
+}
 
 
 function Get-PowerSchoolStudents {
    param(
        [int16]
-       $MaxResults
+       $MaxResults = 10,
+       [int16]
+       $SchoolID = 3,
+       [String[]]
+       $EnrollmentStatus = @("A","P"),
+       [String[]]
+       $Expansions = @("demographics","addresses","alerts","phones","school_enrollment","ethnicity_race","contact","contact_info","initial_enrollment","schedule_setup","fees", "lunch"),
+       [String[]]
+       $Extensions=@("s_pa_stu_x","s_stu_crdc_x","c_studentlocator","s_stu_ncea_x","studentcorefields")
    )
-   /ws/v1/student
+    $URL = "/ws/v1/school/$($SchoolID)/student?q=school_enrollment.enroll_status==($($EnrollmentStatus -join ','))"
+    if ($Expansions.count -gt 0)
+    { 
+        $URL ="$URL&expansions=$($Expansions -join ',')"
+    }
+    if ($Extensions.count -gt 0)
+    {
+        $URL ="$URL&extensions=$($Extensions -join ',')"
+    }
+    $count = Get-RecordCount -EndpointURL $URL
+    Write-Host "Found $count Students"
+    $studentResults = @()
+    $pageCounter = 0
+    While ( $studentResults.Count -lt $count -and $studentResults.count -lt $MaxResults)
+    {
+        $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "GET" -PageNumber $pageCounter
+        Foreach ($student in $response.students.student)
+        {
+            $studentResults += $student
+        }
+        $pageCounter +=1
+    }
+    $studentResults
 }
