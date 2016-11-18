@@ -36,6 +36,11 @@
     <field table="STUDENTS" field="GuardianEmail" access="ViewOnly" />
     <field table="STUDENTS" field="DistrictOfResidence" access="ViewOnly" />
     <field table="STUDENTS" field="Middle_Name" access="ViewOnly" />
+    <field table="ATTENDANCE" field="att_code" access="ViewOnly" />
+    <field table="Attendance_Code" field="att_code" access="ViewOnly" />
+    <field table="Code_Entity" field="Ce_Code" access="ViewOnly" />
+    <field table="Schools" field="School_Number" access="ViewOnly" />
+    <field table="Schools" field="Name" access="ViewOnly" />
 
 		
   </access_request>

@@ -225,3 +225,32 @@ function Execute-PowerSchoolPowerQuery {
     $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber
     $response
 }
+
+Function Get-DailyAttendanceRecords {
+    <#
+
+    #>
+    param(
+
+    )
+    
+    $attendanceRecords = @()
+    $pageCounter = 0
+    $hasMore = $true
+    While ( $hasMore )
+    {
+
+        $qr = Execute-PowerSchoolPowerQuery -queryName "org.bucksiu.powershellpowerschool.api.dailyattendance" -PageNumber $pageCounter
+        if ($qr.record.count -lt 100)
+        {
+            $hasMore = $false
+        }   
+        Foreach ($Student in $qr.record)
+        {
+            $attendanceRecords += $student.tables.students
+        } 
+        $pageCounter +=1
+    }
+
+    $attendanceRecords
+}
