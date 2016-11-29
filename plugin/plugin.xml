@@ -36,12 +36,22 @@
     <field table="STUDENTS" field="GuardianEmail" access="ViewOnly" />
     <field table="STUDENTS" field="DistrictOfResidence" access="ViewOnly" />
     <field table="STUDENTS" field="Middle_Name" access="ViewOnly" />
-    <field table="ATTENDANCE" field="att_code" access="ViewOnly" />
+    <field table="Attendance" field="attendance_codeid" access="ViewOnly"/>
+    <field table="Attendance" field="StudentID" access="ViewOnly"/>
+    <field table="Attendance" field="SchoolID" access="ViewOnly"/>
+    <field table="Attendance" field="PeriodID" access="ViewOnly"/>
+    <field table="Attendance" field="att_date" access="ViewOnly"/>
+    <field table="Att_Code_Code_Entity" field="Attendance_CodeID" access="ViewOnly" />
+    <field table="Att_Code_Code_Entity" field="code_entityid" access="ViewOnly" />
+    <field table="Attendance_Code" field="Id" access="ViewOnly" />
     <field table="Attendance_Code" field="att_code" access="ViewOnly" />
+    <field table="Code_Entity" field="Id" access="ViewOnly" />
     <field table="Code_Entity" field="Ce_Code" access="ViewOnly" />
     <field table="Schools" field="School_Number" access="ViewOnly" />
     <field table="Schools" field="Name" access="ViewOnly" />
-
+    <field table="Period" field="Id" access="ViewOnly" />
+    <field table="Period" field="period_number" access="ViewOnly" />
+    <field table="Period" field="Name" access="ViewOnly" />
 		
   </access_request>
 
