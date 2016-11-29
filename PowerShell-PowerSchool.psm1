@@ -98,30 +98,29 @@ function Get-PowerSchoolRecordCount {
 
 function Get-PowerSchoolAttendanceRecords {
     param(
-        $Date = $(get-date),
+        $Date = $(get-date -format "MM-dd-yyyy"),
         $AttendanceCodes = "1"
     )
 
     $attendanceRecords = @()
-    $postBody = '{ "date": "11-29-2016" }'
+    $postBody ="{ ""date"": ""$Date"" }"
     $pageCounter = 0
     $hasMore = $true
     While ( $hasMore )
     {
 
         $qr = Execute-PowerSchoolPowerQuery -queryName "org.bucksiu.powershellpowerschool.api.dailyattendance" -PageNumber $pageCounter -postBody $postBody
-        $qr
-        break
         if ($qr.record.count -lt 100)
         {
             $hasMore = $false
         }   
         Foreach ($attendanceRecord in $qr.record)
         {
-            $attendanceRecords += $attendanceRecord.tables.students
+            $attendanceRecords += $attendanceRecord.tables.attendance
         } 
         $pageCounter +=1
     }
+    $attendanceRecords
 
 }
 
