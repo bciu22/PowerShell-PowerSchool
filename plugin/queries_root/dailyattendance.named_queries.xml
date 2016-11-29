@@ -15,6 +15,7 @@
             <column column="Period.name">period_name</column>
             <column column="Period.name">period_number</column>
             <column column="Attendance_Code.att_code">att_code</column>
+            <column column="Attendance_Code.Presence_Status_CD">presence_status</column>
             <column column="Code_Entity.Ce_Code">att_code_cat</column>  
   		</columns>
         <sql>
@@ -30,6 +31,7 @@
                     p.Name AS period_name,
                     p.Period_Number AS period_number,
                     atcd.att_code as att_code,
+                    atcd.Presence_Status_CD as presence_status,
                     ce.Ce_Code as att_code_cat
                 FROM
                 Attendance att
@@ -39,7 +41,7 @@
                 INNER JOIN Students st ON ( att.StudentID=st.id )
                 INNER JOIN Schools sch ON ( att.SchoolID=sch.School_Number )
                 left JOIN Period p ON (att.PeriodID=p.id)
-                WHERE ce.Ce_Code <> 'Excused' AND att.att_date = :date
+                WHERE atcd.id <> '1' AND att.att_date = :date
                 AND p.Period_Number IS NULL
                 ORDER BY institution_name, reference_code, period_name
 			]]>
