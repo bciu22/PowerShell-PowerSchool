@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation='http://plugin.powerschool.pearson.com plugin.xsd'
         name="PowerSchool-PowerShell-API-Plugin"
-        version="1.0.2"
+        version="1.0.3"
         description="PowerSchool PowerShell API Plugin">
 
 	<oauth></oauth>	
