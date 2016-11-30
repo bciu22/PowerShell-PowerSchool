@@ -53,7 +53,8 @@ function Invoke-PowerSchoolRESTMethod {
         $EndpointURL,
         $Method,
         $PageNumber=0,
-        $PageSize=0
+        $PageSize=0,
+        $Body = $null
     )
 
     $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
@@ -77,8 +78,11 @@ function Invoke-PowerSchoolRESTMethod {
            $EndpointURL +="&pagesize=$PageSize"
         }
     }
+    
     $uri ="$($(Get-Variable -Name 'PowerSchoolURL').value)$($EndpointURL)"
-    $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers
+    Write-Host $uri
+    Write-Host $Body
+    $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers -Body $Body
     $Response
 }
 
@@ -92,6 +96,33 @@ function Get-PowerSchoolRecordCount {
 
 }
 
+function Get-PowerSchoolAttendanceRecords {
+    param(
+        $Date = $(get-date -format "MM-dd-yyyy"),
+        $AttendanceCodes = "1"
+    )
+
+    $attendanceRecords = @()
+    $postBody ="{ ""date"": ""$Date"" }"
+    $pageCounter = 0
+    $hasMore = $true
+    While ( $hasMore )
+    {
+
+        $qr = Execute-PowerSchoolPowerQuery -queryName "org.bucksiu.powershellpowerschool.api.dailyattendance" -PageNumber $pageCounter -postBody $postBody
+        if ($qr.record.count -lt 100)
+        {
+            $hasMore = $false
+        }   
+        Foreach ($attendanceRecord in $qr.record)
+        {
+            $attendanceRecords += $attendanceRecord.tables.attendance
+        } 
+        $pageCounter +=1
+    }
+    $attendanceRecords
+
+}
 
 function Get-PowerSchoolStudents {
     <#
@@ -219,9 +250,10 @@ function Execute-PowerSchoolPowerQuery {
     #>
     param (
         $queryName,
-        $PageNumber=0
+        $PageNumber=0,
+        $postBody
     )
      $URL = "/ws/schema/query/$queryName"
-    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber
+    $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber -Body $postBody
     $response
 }

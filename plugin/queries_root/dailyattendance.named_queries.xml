@@ -1,0 +1,50 @@
+<queries>
+    <query name="org.bucksiu.powershellpowerschool.api.dailyattendance" coreTable="ATTENDANCE" flattened="false">
+        <description>Students Query</description>
+        <args>
+            <arg name="date" required="true"/>
+        </args>
+        <columns>
+            <column column="Students.dcid" >person_sourced_id</column>
+            <column column="Attendance.att_date">attendance_record_date</column>
+            <column column="Schools.School_Number">institution_code</column>
+            <column column="Schools.Name">institution_name</column>
+            <column column="Students.Student_Number">reference_code</column>
+            <column column="Students.Student_Number">last_name</column>
+            <column column="Students.Student_Number">first_name</column>
+            <column column="Period.name">period_name</column>
+            <column column="Period.name">period_number</column>
+            <column column="Attendance_Code.att_code">att_code</column>
+            <column column="Attendance_Code.Presence_Status_CD">presence_status</column>
+            <column column="Code_Entity.Ce_Code">att_code_cat</column>  
+  		</columns>
+        <sql>
+			<![CDATA[
+                SELECT
+                    concat('stu',st.dcid) as person_sourced_id,
+                    att.att_date as attendance_record_date,
+                    sch.School_Number as institution_code,
+                    sch.Name AS institution_name,
+                    st.Student_Number AS reference_code,
+                    st.Last_Name AS last_name,
+                    st.First_Name AS first_name,
+                    p.Name AS period_name,
+                    p.Period_Number AS period_number,
+                    atcd.att_code as att_code,
+                    atcd.Presence_Status_CD as presence_status,
+                    ce.Ce_Code as att_code_cat
+                FROM
+                Attendance att
+                INNER JOIN Attendance_Code atcd ON ( att.attendance_codeid=atcd.id  )
+                INNER JOIN Att_Code_Code_Entity attcce ON ( attcce.Attendance_CodeID=atcd.id )
+                INNER JOIN Code_Entity ce ON ( attcce.Code_EntityID=ce.id )
+                INNER JOIN Students st ON ( att.StudentID=st.id )
+                INNER JOIN Schools sch ON ( att.SchoolID=sch.School_Number )
+                left JOIN Period p ON (att.PeriodID=p.id)
+                WHERE atcd.id <> '1' AND att.att_date = :date
+                AND p.Period_Number IS NULL
+                ORDER BY institution_name, reference_code, period_name
+			]]>
+        </sql>
+    </query>
+</queries>
