@@ -36,6 +36,7 @@
     <field table="STUDENTS" field="GuardianEmail" access="ViewOnly" />
     <field table="STUDENTS" field="DistrictOfResidence" access="ViewOnly" />
     <field table="STUDENTS" field="Middle_Name" access="ViewOnly" />
+    <field table="STUDENTS" field="LunchStatus" access="ViewOnly" />
     <field table="Attendance" field="attendance_codeid" access="ViewOnly"/>
     <field table="Attendance" field="StudentID" access="ViewOnly"/>
     <field table="Attendance" field="SchoolID" access="ViewOnly"/>

@@ -80,9 +80,15 @@ function Invoke-PowerSchoolRESTMethod {
     }
     
     $uri ="$($(Get-Variable -Name 'PowerSchoolURL').value)$($EndpointURL)"
-    Write-Host $uri
-    Write-Host $Body
-    $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers -Body $Body
+    if ($Body)
+    {
+        $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers -Body $Body
+    }
+    else
+    {
+        $Response = Invoke-RestMethod -Uri $uri -Method $Method -Headers $headers
+    }
+    
     $Response
 }
 
@@ -251,7 +257,7 @@ function Execute-PowerSchoolPowerQuery {
     param (
         $queryName,
         $PageNumber=0,
-        $postBody
+        $postBody=$null
     )
      $URL = "/ws/schema/query/$queryName"
     $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber -Body $postBody
