@@ -1,0 +1,16 @@
+<queries>
+    <query name="org.bucksiu.powershellpowerschool.api.samluserdata" coreTable="USERS" flattened="false">
+        <description>SAML Users Query</description>
+        <args/>
+        <columns>
+            <column>USERS.SIF_StatePrid</column>
+  		</columns>
+        <sql>
+			<![CDATA[
+			select
+            users.SIF_StatePrid
+			from users    
+			]]>
+        </sql>
+    </query>
+</queries>

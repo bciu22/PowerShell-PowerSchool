@@ -259,7 +259,7 @@ function Execute-PowerSchoolPowerQuery {
         $PageNumber=0,
         $postBody=$null
     )
-     $URL = "/ws/schema/query/$queryName"
+    $URL = "/ws/schema/query/$queryName"
     $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber -Body $postBody
     $response
 }
