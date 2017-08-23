@@ -1,0 +1,23 @@
+<queries>
+    <query name="org.bucksiu.powershellpowerschool.api.users" coreTable="USERS" flattened="false">
+        <description>Users Query</description>
+        <args/>
+        <columns>
+            <column>USERS.LoginID</column>
+            <column>USERS.First_Name</column>
+            <column>USERS.Last_Name</column>
+            <column>USERS.Email_Addr</column>
+            <column>USERS.TeacherNumber</column>
+            <column>USERS.SIF_StatePrid</column>
+  		</columns>
+        <sql>
+			<![CDATA[
+			select
+            LoginID, First_Name, Last_Name,Email_Addr,TeacherNumber,SIF_StatePrid
+            
+			from USERS
+			order by SIF_StatePrid        
+			]]>
+        </sql>
+    </query>
+</queries>

@@ -54,6 +54,11 @@
     <field table="Period" field="Id" access="ViewOnly" />
     <field table="Period" field="period_number" access="ViewOnly" />
     <field table="Period" field="Name" access="ViewOnly" />
+    <field table="USERS" field="LoginID" access="ViewOnly" />
+    <field table="USERS" field="First_Name" access="ViewOnly" />
+    <field table="USERS" field="Last_Name" access="ViewOnly" />
+    <field table="USERS" field="Email_Addr" access="ViewOnly" />
+    <field table="USERS" field="TeacherNumber" access="ViewOnly" />
 		<field table="USERS" field="SIF_StatePrid" access="ViewOnly" />
 		
   </access_request>

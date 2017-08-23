@@ -15,14 +15,14 @@
 #>
 
 function Connect-PowerSchoolService {
-<#
+    <#
 
-.PARAMETER Username
-    ClientID for OAUTH pplugin
-.PARAMETER Password
-    $password = ConvertTo-SecureString –String "password" –AsPlainText -Force
+    .PARAMETER Username
+        ClientID for OAUTH pplugin
+    .PARAMETER Password
+        $password = ConvertTo-SecureString –String "password" –AsPlainText -Force
 
-#>
+    #>
     param (
         [parameter(Mandatory=$true)]
         [String]
@@ -262,4 +262,33 @@ function Execute-PowerSchoolPowerQuery {
     $URL = "/ws/schema/query/$queryName"
     $response = Invoke-PowerSchoolRESTMethod -EndpointURL $URL -Method "POST" -PageNumber $PageNumber -Body $postBody
     $response
+}
+
+function Get-PowerSchoolUsers {
+
+    $users = @()
+    $pageCounter = 0
+    $hasMore = $true
+    While ( $hasMore )
+    {
+
+        $qr = Execute-PowerSchoolPowerQuery -queryName "org.bucksiu.powershellpowerschool.api.users" -PageNumber $pageCounter
+        if ($qr.record.count -lt 100)
+        {
+            $hasMore = $false
+        }   
+        Foreach ($userRecord in $qr.record)
+        {
+            $users += $userRecord.tables.users
+        } 
+        $pageCounter +=1
+    }
+    $users
+}
+
+
+function New-PowerSchoolUser {
+    param(
+        
+    )
 }
