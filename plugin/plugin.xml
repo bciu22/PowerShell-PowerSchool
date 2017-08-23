@@ -3,7 +3,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation='http://plugin.powerschool.pearson.com plugin.xsd'
         name="PowerSchool-PowerShell-API-Plugin"
-        version="1.0.3"
+        version="1.0.4"
         description="PowerSchool PowerShell API Plugin">
 
 	<oauth></oauth>	
@@ -54,6 +54,7 @@
     <field table="Period" field="Id" access="ViewOnly" />
     <field table="Period" field="period_number" access="ViewOnly" />
     <field table="Period" field="Name" access="ViewOnly" />
+		<field table="USERS" field="SIF_StatePrid" access="ViewOnly" />
 		
   </access_request>
 
