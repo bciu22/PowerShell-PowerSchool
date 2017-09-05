@@ -9,11 +9,17 @@
             <column>USERS.Email_Addr</column>
             <column>USERS.TeacherNumber</column>
             <column>USERS.SIF_StatePrid</column>
+            <column>USERS.PSAccess</column>
+            <column>USERS.PTAccess</column>
+            <column>USERS.Password</column>
+            <column>USERS.TeacherLoginPw</column>
+            <column>USERS.TeacherLoginID</column>
+            <column>USERS.DCID</column>
   		</columns>
         <sql>
 			<![CDATA[
 			select
-            LoginID, First_Name, Last_Name,Email_Addr,TeacherNumber,SIF_StatePrid
+            LoginID, First_Name, Last_Name,Email_Addr,TeacherNumber,SIF_StatePrid,PSAccess,PTAccess, Password, TeacherLoginPw, TeacherLoginID,DCID
             
 			from USERS
 			order by SIF_StatePrid        

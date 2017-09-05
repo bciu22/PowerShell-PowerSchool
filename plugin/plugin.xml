@@ -60,6 +60,13 @@
     <field table="USERS" field="Email_Addr" access="ViewOnly" />
     <field table="USERS" field="TeacherNumber" access="ViewOnly" />
 		<field table="USERS" field="SIF_StatePrid" access="ViewOnly" />
+    <field table="USERS" field="PSAccess" access="ViewOnly" />
+    <field table="USERS" field="PTAccess" access="ViewOnly" />
+    <field table="USERS" field="Password" access="ViewOnly" />
+    <field table="USERS" field="TeacherLoginPw" access="ViewOnly" />
+    <field table="USERS" field="TeacherLoginID" access="ViewOnly" />
+    <field table="USERS" field="DCID" access="ViewOnly" />
+    
 		
   </access_request>
 
